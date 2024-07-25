@@ -29,11 +29,13 @@
             </section>
             <section class="c-attr-mt of">
               <span class="ml10 vam">
+              
                 <em class="icon18 scIcon"></em>
-                <a class="c-fff vam" title="收藏" href="#" >收藏</a>
+                <a class="c-fff vam"  @click="collectCourse('取消收藏成功')" style="color:green" title="收藏" href="#" v-if="course.isCollect">收藏</a>
+                <a class="c-fff vam" @click="collectCourse('收藏成功')" title="收藏" href="#" v-else>收藏</a>
               </span>
             </section>
-            <section class="c-attr-mt" v-if=" isbuyCourse || Number(course.price) === 0">
+            <section class="c-attr-mt" v-if=" course.isBuy || Number(course.price) === 0">
               <a href="#" title="立即观看" class="comm-btn c-btn-3">立即观看</a>
             </section>
 
@@ -310,7 +312,7 @@ data() {
         courseId:''
       },
       course:{},
-      isbuyCourse:false,
+      // isbuyCourse:false,
       chapterVideoList:[]
     }
   },
@@ -339,7 +341,7 @@ data() {
       courseApi.getCourseInfo(this.courseId).then(response=>{
         this.course = response.data.data.course
         this.chapterVideoList = response.data.data.chapterVideoList
-        this.isbuyCourse = response.data.data.isBuy
+        // this.isbuyCourse = response.data.data.isBuy
       })
     },
     //初始化课程评论
@@ -389,6 +391,21 @@ data() {
         //    message:'请先登录，再进行购买!'
         //  });
           this.$router.push({path:'/login'})
+        })
+      },
+      // 收藏课程
+      collectCourse(msg){
+        courseApi.collectCourse(this.courseId).then(response=>{
+        this.$message({
+          type:'success',
+          message: msg
+        });
+        this.initCourseInfo();
+        }).catch(()=>{
+          this.$message({
+          type:'warning',
+          message:'收藏失败!'
+        });
         })
       }
   

@@ -22,5 +22,12 @@ export default {
             url:`/eduservice/coursefront/getFrontCourseInfo/${courseId}`,
             method:'get'
         })
+    },
+    // 4.收藏课程
+    collectCourse(courseId){
+        return request({
+            url:`/eduservice/coursefront/collectCourse/${courseId}`,
+            method:"post"
+        })
     }
 }
